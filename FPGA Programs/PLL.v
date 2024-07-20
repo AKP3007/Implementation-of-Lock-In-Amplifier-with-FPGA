@@ -1,4 +1,5 @@
 // The following code is created to increase the clock frequency of the in-built 50 MHz clock on the Cyclone-II EP2C5144TC8N FPGA provided to me to a maximum of 250 MHz based on the maximum operable clock frequency of the FPGA. The lines 97 and 99 of the code can be changed accordingly to create any desired clock frequency between 0 to 250 MHz.
+// The following Pin Mapping may be done using the Pin Planner to get the desired functionality:- PIN_17 -to inclk0 PIN_31 -to c0 PIN_41 -to locked
 // megafunction wizard: %ALTPLL%
 // GENERATION: STANDARD
 // VERSION: WM1.0
