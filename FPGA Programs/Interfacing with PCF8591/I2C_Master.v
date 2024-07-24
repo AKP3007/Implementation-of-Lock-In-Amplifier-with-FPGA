@@ -63,16 +63,8 @@ module I2C_Master (
       i2cTransferRead <= 1'b0;
       i2cTransferWrite <= 1'b0;
       i2cTransferActive <= 1'b0;
-    end else begin
-      if (i2cTransferActive) begin // If i2cTransferActive is active or true, then the I2C Transfer is in progress with the read signals being active.
-        i2cStart <= 1'b0;
-        i2cStop <= 1'b0;
-        i2cTransferAddress <= pcf8591Address;
-        i2cTransferData <= 8'b0;
-        i2cTransferRead <= 1'b1;
-        i2cTransferWrite <= 1'b0;
-        i2cTransferActive <= 1'b1;
-      end else if (!i2cTransferActive && ~i2cStop) begin // If no transfer is active and i2cStop is not set, it initiates a new transfer by setting i2cStart and i2cStop to 1, and prepares the address and data for writing.
+  end else begin
+      if (!i2cTransferActive && ~i2cStop) begin // If no transfer is active and i2cStop is not set, it initiates a new transfer by setting i2cStart and i2cStop to 1, and prepares the address and data for writing.
         i2cStart <= 1'b1;
         i2cStop <= 1'b1;
         i2cTransferAddress <= 8'b0;
@@ -80,9 +72,17 @@ module I2C_Master (
         i2cTransferRead <= 1'b0;
         i2cTransferWrite <= 1'b1;
         i2cTransferActive <= 1'b1;
-      end else begin // If none of the above condition is met then all the signals are reset to their default states.
+  end else if (i2cTransferActive) begin // If i2cTransferActive is active or true, then the I2C Transfer is in progress with the read signals being active.
         i2cStart <= 1'b0;
         i2cStop <= 1'b0;
+        i2cTransferAddress <= pcf8591Address;
+        i2cTransferData <= 8'b0;
+        i2cTransferRead <= 1'b1;
+        i2cTransferWrite <= 1'b0;
+        i2cTransferActive <= 1'b1;
+      end else begin // If none of the above condition is met then all the signals are reset to their default states and STOP operation is set to HIGH to stop the i2c Communicaton.
+        i2cStart <= 1'b0;
+        i2cStop <= 1'b1;
         i2cTransferAddress <= 8'b0;
         i2cTransferData <= 8'b0;
         i2cTransferRead <= 1'b0;
